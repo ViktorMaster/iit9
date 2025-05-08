@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторна 9</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Інфраструктура інформаційних технологій</h1>
+        <p>Лабораторна робота №9</p>
+        <p th:text="${status.message}">Статус невідомо</p>
+        <div class="status-form">
+            <form th:action="@{/update-status}" method="post" class="status-form-inline">
+                <input type="text" name="message" class="form-control"
+                       placeholder="Введіть новий статус" required>
+                <button type="submit" class="btn">Оновити</button>
+            </form>
+        </div>
+    </header>
+    <main>
+        <div class="authors">
+            <div class="author-card">
+                <h2>Чехович В.А.</h2>
+                <p>ІА-22</p>
+            </div>
+            <div class="author-card">
+                <h2>Парій І.Р.</h2>
+                <p>ІА-22</p>
+            </div>
+            <div class="author-card">
+                <h2>Шкарніков А.С.</h2>
+                <p>ІА-24</p>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>КПІ | 2025</p>
+    </footer>
+</div>
+</body>
+</html>
