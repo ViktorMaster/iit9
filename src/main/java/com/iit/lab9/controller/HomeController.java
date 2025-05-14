@@ -1,26 +1,26 @@
 package com.iit.lab9.controller;
 
 import com.iit.lab9.model.Status;
-import org.fluentd.logger.FluentLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import net.logstash.logback.argument.StructuredArguments;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 public class HomeController {
 
-    private static FluentLogger logger = FluentLogger.getLogger("spring.app", "127.0.0.1", 8080);
+    private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
     private String currentStatus = "Статус невідомо";
 
     @GetMapping("/")
     public String home(Model model) {
-        Map<String, Object> data = new HashMap<>();
-        data.put("message", "Displaying home page");
-        logger.log("home", data);
+        logger.info("Displaying home page",
+                StructuredArguments.keyValue("event", "home"),
+                StructuredArguments.keyValue("status", currentStatus));
 
         model.addAttribute("status", new Status(currentStatus));
         return "index";
@@ -28,17 +28,15 @@ public class HomeController {
 
     @PostMapping("/update-status")
     public String updateStatus(Status status) {
-        Map<String, Object> updateData = new HashMap<>();
-        updateData.put("message", "Status update request received");
-        updateData.put("newStatus", status.getMessage());
-        logger.log("status.update", updateData);
+        logger.info("Status update request received",
+                StructuredArguments.keyValue("event", "status.update"),
+                StructuredArguments.keyValue("newStatus", status.getMessage()));
 
         this.currentStatus = status.getMessage();
 
-        Map<String, Object> updatedData = new HashMap<>();
-        updatedData.put("message", "Status updated successfully");
-        updatedData.put("currentStatus", currentStatus);
-        logger.log("status.updated", updatedData);
+        logger.info("Status updated successfully",
+                StructuredArguments.keyValue("event", "status.updated"),
+                StructuredArguments.keyValue("currentStatus", currentStatus));
 
         return "redirect:/";
     }
